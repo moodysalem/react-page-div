@@ -1,0 +1,2 @@
+var PageDiv = require('./index');
+
