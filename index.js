@@ -7,58 +7,74 @@ module.exports = React.createClass({
 
     propTypes: {
         width: rpt.number.isRequired,
-        height: rpt.number.isRequired,
         widthUnit: rpt.string.isRequired,
+        height: rpt.number.isRequired,
         heightUnit: rpt.string.isRequired
+    },
+
+    getDefaultProps: function () {
+        return {};
     },
 
     getInitialState: function () {
         return {
-            ht: null,
-            wd: null
+            height: null
         };
     },
 
     componentDidMount: function () {
-        this.calculateHeightAndWidth();
+        this.calculateHeight();
     },
 
     componentDidUpdate: function (prevProps, prevState) {
-        this.calculateHeightAndWidth();
+        this.calculateHeight();
     },
 
-    calculateHeightAndWidth: function () {
+    calculateHeight: function () {
         var hidden = this.refs.hidden,
-            ht = hidden.scrollHeight,
-            wd = hidden.scrollWidth;
+            height = hidden.scrollHeight;
 
-        if (this.state.ht !== ht || this.state.wd !== wd) {
+        if (this.state.ht !== height) {
             this.setState({
-                ht: ht,
-                wd: wd
+                ht: height
             });
         }
     },
 
+    getWidth: function () {
+        return (this.props.width + this.props.widthUnit);
+    },
+
+    getHiddenDiv: function () {
+        return d.div({
+            key: 'hidden',
+            ref: 'hidden',
+            style: {
+                width: this.getWidth(),
+                height: 0,
+                visibility: 'hidden'
+            }
+        }, this.props.children);
+    },
+
+    getVisibleDiv: function () {
+        return d.div({
+            key: 'visible',
+            ref: 'visible',
+            style: {
+                height: this.state.height + this.props.heightUnit,
+                width: this.getWidth()
+            }
+        }, this.props.children);
+    },
+
     render: function () {
         return d.div({}, [
-            // a hidden container used to calculate height and width of the children elements
-            d.div({
-                key: 'hidden',
-                ref: 'hidden',
-                style: {
-                    width: 0,
-                    height: 0,
-                    visibility: 'hidden'
-                }
-            }, this.props.children),
-            d.div({
-                key: 'main',
-                style: {
-                    height: this.state.ht + this.props.heightUnit,
-                    width: this.state.wd + this.props.widthUnit
-                }
-            }, this.props.children)
+            // a hidden container used to calculate height of children elements
+            this.getHiddenDiv(),
+
+            // the visible div with the appropriate increment of height
+            this.getVisibleDiv()
         ]);
     }
 });
