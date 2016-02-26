@@ -67,11 +67,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  displayName: 'React Page Div',
 
 	  propTypes: {
+	    // the width of one page
 	    width: rpt.number.isRequired,
 	    widthUnit: ALLOWED_UNITS,
+
+	    // the height of one page
 	    height: rpt.number.isRequired,
 	    heightUnit: ALLOWED_UNITS,
-	    dpi: rpt.number.isRequired
+
+	    // the dpi of the viewer
+	    dpi: rpt.number.isRequired,
+
+	    // how often to verify the proper number of page increments are displayed in ms
+	    checkInterval: rpt.number,
+
+	    pageMarkerStyle: rpt.obj
 	  },
 
 	  getDefaultProps: function () {
@@ -79,7 +89,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      widthUnit: 'in',
 	      fixed: 'width',
 	      dpi: 300,
-	      checkInterval: 100
+	      checkInterval: null,
+	      pageMarkerStyle: {
+	        borderTop: '1px dotted black'
+	      }
 	    };
 	  },
 
@@ -95,18 +108,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.checkHeight();
 	  },
 
+	  componentDidUpdate: function (prevProps, prevState) {
+	    this.calculateHeight();
+
+	    if (prevProps.checkInterval !== this.props.checkInterval) {
+	      this.checkHeight();
+	    }
+	  },
+
 	  checkHeight: function () {
 	    if (this.isMounted()) {
 	      this.calculateHeight();
 
-	      setTimeout(function () {
-	        this.checkHeight();
-	      }.bind(this), this.props.checkInterval);
+	      if (this.props.checkInterval !== null) {
+	        setTimeout(function () {
+	          this.checkHeight();
+	        }.bind(this), this.props.checkInterval);
+	      }
 	    }
-	  },
-
-	  componentDidUpdate: function (prevProps, prevState) {
-	    this.calculateHeight();
 	  },
 
 	  calculateHeight: function () {
@@ -141,13 +160,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var pm = [];
 	    for (var i = 1; i < this.state.increments; i++) {
 	      pm.push(d.hr({
-	        style: {
+	        key: i,
+	        style: assign({}, this.props.pageMarkerStyle, {
 	          position: 'absolute',
 	          left: 0,
 	          right: 0,
-	          borderTop: '1px dotted white',
 	          top: (i * this.props.height) + this.props.heightUnit
-	        }
+	        })
 	      }));
 	    }
 	    return pm;

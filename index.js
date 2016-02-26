@@ -23,7 +23,9 @@ module.exports = React.createClass({
     dpi: rpt.number.isRequired,
 
     // how often to verify the proper number of page increments are displayed in ms
-    checkInterval: rpt.number
+    checkInterval: rpt.number,
+
+    pageMarkerStyle: rpt.obj
   },
 
   getDefaultProps: function () {
@@ -31,7 +33,10 @@ module.exports = React.createClass({
       widthUnit: 'in',
       fixed: 'width',
       dpi: 300,
-      checkInterval: null
+      checkInterval: null,
+      pageMarkerStyle: {
+        borderTop: '1px dotted black'
+      }
     };
   },
 
@@ -99,13 +104,13 @@ module.exports = React.createClass({
     var pm = [];
     for (var i = 1; i < this.state.increments; i++) {
       pm.push(d.hr({
-        style: {
+        key: i,
+        style: assign({}, this.props.pageMarkerStyle, {
           position: 'absolute',
           left: 0,
           right: 0,
-          borderTop: '1px dotted white',
           top: (i * this.props.height) + this.props.heightUnit
-        }
+        })
       }));
     }
     return pm;
