@@ -25,16 +25,66 @@
     var rpd = React.createFactory(ReactPageDiv),
             d = React.DOM;
 
-    ReactDOM.render(rpd({
-        className: 'page',
-        width: 8.5,
-        widthUnit: 'in',
-        height: 11,
-        heightUnit: 'in',
-        dpi: 96
-    }, [
-        d.div({ style: { backgroundColor: 'red', height: 1200 }, key: 1 }, 'Hello')
-    ]), document.getElementById('demo'));
+    var Demo = React.createClass({
+
+        getInitialState: function () {
+            return {
+                height: 100
+            };
+        },
+
+        getPages: function () {
+            return rpd({
+                className: 'page',
+                width: 8.5,
+                widthUnit: 'in',
+                height: 11,
+                heightUnit: 'in',
+                dpi: 96
+            }, d.div({
+                style: { display: 'flex', flexFlow: 'column nowrap', minHeight: '100%' }
+            }, [
+                d.h1({
+                    key: 1,
+                    style: { flex: 'none' }
+                }, 'Heading 1'),
+
+                d.div({
+                    key: 2,
+                    style: {
+                        flex: '1 0',
+                        minHeight: 0,
+                        backgroundColor: 'red'
+                    }
+                }, [
+                    d.div({ style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello')
+                ]),
+
+                d.h3({
+                    key: 3,
+                    style: { flex: 'none', minHeight: 0 }
+                }, 'Footer')
+            ]));
+        },
+
+        setHeight: function (e) {
+            this.setState({
+                height: e.target.value
+            });
+        },
+
+        render: function () {
+            return d.div({}, [
+                d.div({ key: 'form' }, [
+                    d.input({ type: 'number', min: 0, step: 10, value: this.state.height, onChange: this.setHeight })
+                ]),
+
+                d.div({ key: 'pgs' }, this.getPages())
+            ]);
+        }
+    });
+
+    ReactDOM.render(React.createElement(Demo), document.getElementById('demo'));
 </script>
 
 </body>

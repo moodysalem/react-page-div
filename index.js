@@ -11,33 +11,60 @@ module.exports = React.createClass({
   displayName: 'React Page Div',
 
   propTypes: {
+    // the width of one page
     width: rpt.number.isRequired,
     widthUnit: ALLOWED_UNITS,
+
+    // the height of one page
     height: rpt.number.isRequired,
     heightUnit: ALLOWED_UNITS,
-    dpi: rpt.number.isRequired
+
+    // the dpi of the viewer
+    dpi: rpt.number.isRequired,
+
+    // how often to verify the proper number of page increments are displayed in ms
+    checkInterval: rpt.number
   },
 
   getDefaultProps: function () {
     return {
       widthUnit: 'in',
       fixed: 'width',
-      dpi: 300
+      dpi: 300,
+      checkInterval: null
     };
   },
 
   getInitialState: function () {
     return {
-      increments: 1
+      increments: 1,
+      calculateTimer: null
     };
   },
 
   componentDidMount: function () {
     this.calculateHeight();
+    this.checkHeight();
   },
 
   componentDidUpdate: function (prevProps, prevState) {
     this.calculateHeight();
+
+    if (prevProps.checkInterval !== this.props.checkInterval) {
+      this.checkHeight();
+    }
+  },
+
+  checkHeight: function () {
+    if (this.isMounted()) {
+      this.calculateHeight();
+
+      if (this.props.checkInterval !== null) {
+        setTimeout(function () {
+          this.checkHeight();
+        }.bind(this), this.props.checkInterval);
+      }
+    }
   },
 
   calculateHeight: function () {
@@ -108,6 +135,7 @@ module.exports = React.createClass({
       ref: 'visible',
       className: this.props.className,
       style: assign({}, this.props.style, {
+        overflow: 'hidden',
         position: 'relative',
         height: (this.props.height * this.state.increments) + this.props.heightUnit,
         width: this.getWidth()

@@ -78,18 +78,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      widthUnit: 'in',
 	      fixed: 'width',
-	      dpi: 300
+	      dpi: 300,
+	      checkInterval: 100
 	    };
 	  },
 
 	  getInitialState: function () {
 	    return {
-	      increments: 1
+	      increments: 1,
+	      calculateTimer: null
 	    };
 	  },
 
 	  componentDidMount: function () {
 	    this.calculateHeight();
+	    this.checkHeight();
+	  },
+
+	  checkHeight: function () {
+	    if (this.isMounted()) {
+	      this.calculateHeight();
+
+	      setTimeout(function () {
+	        this.checkHeight();
+	      }.bind(this), this.props.checkInterval);
+	    }
 	  },
 
 	  componentDidUpdate: function (prevProps, prevState) {
@@ -164,6 +177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ref: 'visible',
 	      className: this.props.className,
 	      style: assign({}, this.props.style, {
+	        overflow: 'hidden',
 	        position: 'relative',
 	        height: (this.props.height * this.state.increments) + this.props.heightUnit,
 	        width: this.getWidth()
