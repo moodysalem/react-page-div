@@ -34,9 +34,12 @@
   },
   "homepage": "https://github.com/moodysalem/react-page-div#readme",
   "devDependencies": {
+    "jsdom": "^8.0.4",
     "mocha": "^2.4.5",
     "npm-release": "^1.0.0",
+    "object-assign": "^4.0.1",
     "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "webpack": "^1.12.13"
   }
 }

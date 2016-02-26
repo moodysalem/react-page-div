@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo React Page Div</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" rel="stylesheet"/>
+    <style>
+        .page {
+            margin: 10px auto;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+
+    <script src="dist/ReactPageDiv.js"></script>
+</head>
+<body>
+
+<div id="demo"></div>
+
+<script>
+    var rpd = React.createFactory(ReactPageDiv),
+            d = React.DOM;
+
+    ReactDOM.render(rpd({
+        className: 'page',
+        width: 8.5,
+        widthUnit: 'in',
+        height: 11,
+        heightUnit: 'in',
+        dpi: 96
+    }, [
+        d.div({ style: { backgroundColor: 'red', height: 1200 }, key: 1 }, 'Hello')
+    ]), document.getElementById('demo'));
+</script>
+
+</body>
+</html>
