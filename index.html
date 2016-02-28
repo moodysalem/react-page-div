@@ -10,6 +10,13 @@
     <script src="https://fb.me/react-dom-0.14.7.js"></script>
 
     <script src="dist/ReactPageDiv.js"></script>
+
+    <style>
+        .page {
+            margin: 10px auto;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
 <body>
 
@@ -36,11 +43,11 @@
                 heightUnit: 'in',
                 dpi: 96
             }, d.div({
-                style: { display: 'flex', flexFlow: 'column nowrap', minHeight: '100%' }
+                style: {display: 'flex', flexFlow: 'column nowrap', minHeight: '100%'}
             }, [
                 d.h1({
                     key: 1,
-                    style: { flex: 'none' }
+                    style: {flex: 'none'}
                 }, 'Heading 1'),
 
                 d.div({
@@ -51,12 +58,12 @@
                         backgroundColor: 'red'
                     }
                 }, [
-                    d.div({ style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello')
+                    d.div({style: {minHeight: this.state.height, backgroundColor: 'pink'}}, 'hello')
                 ]),
 
                 d.h3({
                     key: 3,
-                    style: { flex: 'none', minHeight: 0 }
+                    style: {flex: 'none', minHeight: 0}
                 }, 'Footer')
             ]));
         },
@@ -69,11 +76,11 @@
 
         render: function () {
             return d.div({}, [
-                d.div({ key: 'form' }, [
-                    d.input({ type: 'number', min: 0, step: 10, value: this.state.height, onChange: this.setHeight })
+                d.div({key: 'form'}, [
+                    d.input({type: 'number', min: 0, step: 10, value: this.state.height, onChange: this.setHeight})
                 ]),
 
-                d.div({ key: 'pgs' }, this.getPages())
+                d.div({key: 'pgs'}, this.getPages())
             ]);
         }
     });
