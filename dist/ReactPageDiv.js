@@ -83,7 +83,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    checkInterval: rpt.number,
 
 	    // the style to apply to the page break marker
-	    pageMarkerStyle: rpt.object
+	    pageMarkerStyle: rpt.object,
+	    pageMarkerClassName: rpt.string
 	  },
 
 	  getDefaultProps: function () {
@@ -94,7 +95,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      checkInterval: null,
 	      pageMarkerStyle: {
 	        borderTop: '2px dashed rgba(0,0,0,0.5)'
-	      }
+	      },
+	      pageMarkerClassName: 'hidden-print'
 	    };
 	  },
 
@@ -163,6 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var i = 1; i < this.state.increments; i++) {
 	      pm.push(d.div({
 	        key: i,
+	        className: this.props.pageMarkerClassName,
 	        style: assign({}, this.props.pageMarkerStyle, {
 	          position: 'absolute',
 	          left: 0,
