@@ -50,6 +50,7 @@
             d = React.DOM;
 
     var PageDemo = React.createClass({
+        displayName: 'Page Demo',
 
         getInitialState: function () {
             return {
@@ -81,11 +82,31 @@
                         backgroundColor: 'red'
                     }
                 }, [
-                    d.div({ style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello')
+                    d.div({ key: 1, style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello')
+                ]),
+
+                d.div({
+                    key: 3,
+                    style: { flex: 'none', display: 'flex', backgroundColor: 'yellow', minHeight: 0 }
+                }, [
+                    d.div({ key: 1, style: { flex: '1 1 50%' } }, d.table({}, [
+                        d.thead({ key: 1 }, d.tr({}, [ d.th({ key: 1 }, 'Hello'), d.th({ key: 2 }, 'World') ])),
+                        d.tbody({ key: 2 }, [
+                            d.tr({ key: 1 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ])
+                        ])
+                    ])),
+                    d.div({ key: 2, style: { flex: '1 1 50%' } }, d.table({}, [
+                        d.thead({ key: 1 }, d.tr({}, [ d.th({ key: 1 }, 'Hello'), d.th({ key: 2 }, 'World') ])),
+                        d.tbody({ key: 2 }, [
+                            d.tr({ key: 1 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ]),
+                            d.tr({ key: 2 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ]),
+                            d.tr({ key: 3 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ])
+                        ])
+                    ]))
                 ]),
 
                 d.h3({
-                    key: 3,
+                    key: 4,
                     style: { flex: 'none', minHeight: 0 }
                 }, 'Footer')
             ]));
@@ -100,8 +121,15 @@
         render: function () {
             return d.div({}, [
                 d.div({ key: 'form', className: 'container hidden-print' }, [
-                    d.label({ key: 1 }, 'Section Height: '),
-                    d.input({ type: 'number', min: 0, step: 10, value: this.state.height, onChange: this.setHeight })
+                    d.label({ key: 1 }, 'Section Content Height: '),
+                    d.input({
+                        key: 2,
+                        type: 'number',
+                        min: 0,
+                        step: 10,
+                        value: this.state.height,
+                        onChange: this.setHeight
+                    })
                 ]),
 
                 d.div({ key: 'pgs' }, this.getPages())
@@ -111,8 +139,9 @@
 
     var pdf = React.createFactory(PageDemo);
 
-    // not used yet
     var Demo = React.createClass({
+        displayName: 'Demo',
+
         getInitialState: function () {
             return {
                 sections: 1
