@@ -21,11 +21,23 @@
             .container {
                 width: 100%;
             }
+
         }
 
         .page {
             margin: 10px auto;
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        }
+
+        @media print {
+            .hidden-print {
+                display: none;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
@@ -87,7 +99,7 @@
 
         render: function () {
             return d.div({}, [
-                d.div({ key: 'form', className: 'container' }, [
+                d.div({ key: 'form', className: 'container hidden-print' }, [
                     d.label({ key: 1 }, 'Section Height: '),
                     d.input({ type: 'number', min: 0, step: 10, value: this.state.height, onChange: this.setHeight })
                 ]),
@@ -123,11 +135,11 @@
 
         render: function () {
             return d.div({}, [
-                d.form({ key: 1 }, [
+                d.form({ key: 1, className: 'hidden-print' }, [
                     d.label({ key: 1 }, '# of sections: '),
-                    d.input({ key: 2, type: 'number', value: this.state.sections, onChange: this.handleChange })
+                    d.input({ key: 2, type: 'number', value: this.state.sections, onChange: this.handleChange }),
+                    d.hr({ key: 3 })
                 ]),
-                d.hr({ key: 2 }),
 
                 d.div({ key: 'sec' }, this.getSections())
             ]);
