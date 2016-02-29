@@ -61,11 +61,11 @@
         getPages: function () {
             return rpd({
                 className: 'page',
-                width: 8.5,
+                width: this.props.pageWidth,
                 widthUnit: 'in',
-                height: 11,
+                height: this.props.pageHeight,
                 heightUnit: 'in',
-                dpi: 96
+                dpi: this.props.dpi
             }, d.div({
                 style: { display: 'flex', flexFlow: 'column nowrap', minHeight: '100%' }
             }, [
@@ -120,17 +120,17 @@
 
         render: function () {
             return d.div({}, [
-                d.div({ key: 'form', className: 'container hidden-print' }, [
-                    d.label({ key: 1 }, 'Section Content Height: '),
-                    d.input({
-                        key: 2,
-                        type: 'number',
-                        min: 0,
-                        step: 10,
-                        value: this.state.height,
-                        onChange: this.setHeight
-                    })
-                ]),
+                d.div({
+                    key: 'form',
+                    className: 'container hidden-print'
+                }, d.label({ key: 1 }, 'Section Content Height: ', d.input({
+                    key: 2,
+                    type: 'number',
+                    min: 0,
+                    step: 10,
+                    value: this.state.height,
+                    onChange: this.setHeight
+                }))),
 
                 d.div({ key: 'pgs' }, this.getPages())
             ]);
@@ -144,20 +144,54 @@
 
         getInitialState: function () {
             return {
-                sections: 1
+                sections: 1,
+                pageWidth: 8.5,
+                pageHeight: 11,
+                dpi: 96
             };
         },
 
-        handleChange: function (e) {
+        handleSectionsChange: function (e) {
             this.setState({
                 sections: e.target.value
             });
         },
 
+        handleWidthChange: function (e) {
+            var val = +e.target.value;
+            if (typeof val === 'number' && !isNaN(val)) {
+                this.setState({
+                    pageWidth: Math.max(1, val)
+                });
+            }
+        },
+        handleHeightChange: function (e) {
+            var val = +e.target.value;
+            if (typeof val === 'number' && !isNaN(val)) {
+                this.setState({
+                    pageHeight: Math.max(1, val)
+                });
+            }
+        },
+
+
+        handleDpiChange: function (e) {
+            var val = +e.target.value;
+            if (typeof val === 'number' && !isNaN(val)) {
+                this.setState({
+                    dpi: Math.max(1, val)
+                });
+            }
+        },
         getSections: function () {
             var sec = [];
             for (var i = 0; i < this.state.sections; i++) {
-                sec.push(pdf({ key: i }));
+                sec.push(pdf({
+                    key: i,
+                    pageHeight: this.state.pageHeight,
+                    pageWidth: this.state.pageWidth,
+                    dpi: this.props.dpi
+                }));
             }
             return sec;
         },
@@ -165,9 +199,47 @@
         render: function () {
             return d.div({}, [
                 d.form({ key: 1, className: 'hidden-print' }, [
-                    d.label({ key: 1 }, '# of sections: '),
-                    d.input({ key: 2, type: 'number', value: this.state.sections, onChange: this.handleChange }),
-                    d.hr({ key: 3 })
+                    d.label({ key: 1, htmlFor: 'numSections' }, '# of sections: '),
+                    d.input({
+                        key: 2,
+                        min: 1,
+                        id: 'numSections',
+                        type: 'number',
+                        value: this.state.sections,
+                        onChange: this.handleSectionsChange
+                    }),
+                    d.label({ key: 3, htmlFor: 'pageWidth' }, 'page width (in): '),
+                    d.input({
+                        key: 4,
+                        min: 1,
+                        step: 0.1,
+                        id: 'pageWidth',
+                        type: 'number',
+                        value: this.state.pageWidth,
+                        onChange: this.handleWidthChange
+                    }),
+                    d.label({ key: 5, htmlFor: 'pageHeight' }, 'page height (in): '),
+                    d.input({
+                        key: 6,
+                        min: 1,
+                        step: 0.1,
+                        id: 'pageHeight',
+                        type: 'number',
+                        value: this.state.pageHeight,
+                        onChange: this.handleHeightChange
+                    }),
+
+                    d.label({ key: 7, htmlFor: 'dpi' }, 'screen dpi: '),
+                    d.input({
+                        key: 8,
+                        min: 0,
+                        step: 4,
+                        id: 'dpi',
+                        type: 'number',
+                        value: this.state.dpi,
+                        onChange: this.handleDpiChange
+                    }),
+                    d.hr({ key: 'hr' })
                 ]),
 
                 d.div({ key: 'sec' }, this.getSections())
