@@ -19,23 +19,25 @@ module.exports = React.createClass({
     height: rpt.number.isRequired,
     heightUnit: ALLOWED_UNITS,
 
-    // the dpi of the viewer
+    // the dpi of the user agent, used to convert inches to pixels
     dpi: rpt.number.isRequired,
 
-    // how often to verify the proper number of page increments are displayed in ms
+    // how often to verify the proper number of page increments are displayed in ms, or null if all dom updates are happening
+    // through the div and no timer needs to be set
     checkInterval: rpt.number,
 
-    pageMarkerStyle: rpt.obj
+    // the style to apply to the page break marker
+    pageMarkerStyle: rpt.object
   },
 
   getDefaultProps: function () {
     return {
       widthUnit: 'in',
       fixed: 'width',
-      dpi: 300,
+      dpi: 96,
       checkInterval: null,
       pageMarkerStyle: {
-        borderTop: '1px dotted black'
+        borderTop: '2px dashed rgba(0,0,0,0.5)'
       }
     };
   },
@@ -103,7 +105,7 @@ module.exports = React.createClass({
   getPageMarkers: function () {
     var pm = [];
     for (var i = 1; i < this.state.increments; i++) {
-      pm.push(d.hr({
+      pm.push(d.div({
         key: i,
         style: assign({}, this.props.pageMarkerStyle, {
           position: 'absolute',
