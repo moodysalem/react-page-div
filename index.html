@@ -101,12 +101,40 @@
 
     // not used yet
     var Demo = React.createClass({
+        getInitialState: function () {
+            return {
+                sections: 1
+            };
+        },
+
+        handleChange: function (e) {
+            this.setState({
+                sections: e.target.value
+            });
+        },
+
+        getSections: function () {
+            var sec = [];
+            for (var i = 0; i < this.state.sections; i++) {
+                sec.push(pdf({ key: i }));
+            }
+            return sec;
+        },
+
         render: function () {
-            return d.div({});
+            return d.div({}, [
+                d.form({ key: 1 }, [
+                    d.label({ key: 1 }, '# of sections: '),
+                    d.input({ key: 2, type: 'number', value: this.state.sections, onChange: this.handleChange })
+                ]),
+                d.hr({ key: 2 }),
+
+                d.div({ key: 'sec' }, this.getSections())
+            ]);
         }
     });
 
-    ReactDOM.render(React.createElement(PageDemo), document.getElementById('demo'));
+    ReactDOM.render(React.createElement(Demo), document.getElementById('demo'));
 </script>
 
 </body>
