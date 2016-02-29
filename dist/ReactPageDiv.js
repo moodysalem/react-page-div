@@ -90,13 +90,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  getDefaultProps: function () {
 	    return {
 	      widthUnit: 'in',
-	      fixed: 'width',
+	      heightUnit: 'in',
 	      dpi: 96,
 	      checkInterval: null,
 	      pageMarkerStyle: {
 	        borderTop: '2px dashed rgba(0,0,0,0.5)'
 	      },
-	      pageMarkerClassName: 'hidden-print'
+	      pageMarkerClassName: ''
 	    };
 	  },
 
