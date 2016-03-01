@@ -39,6 +39,43 @@
                 box-shadow: none;
             }
         }
+
+        .flex-column {
+            display: flex;
+            display: -webkit-flex;
+            flex-flow: column nowrap;
+            -webkit-flex-flow: column nowrap;
+        }
+
+        .min-height-100 {
+            min-height: 100%;
+        }
+
+        .min-height-0 {
+            min-height: 0;
+        }
+
+        .no-flex {
+            flex: none;
+            -webkit-flex: none;
+        }
+
+        .flex-row {
+            display: flex;
+            display: -webkit-flex;
+            flex-flow: row nowrap;
+            -webkit-flex-flow: row nowrap;
+        }
+
+        .flex-grow {
+            flex: 1 0;
+            -webkit-flex: 1 0;
+        }
+
+        .flex-50 {
+            flex: 1 1 50%;
+            -webkit-flex: 1 1 50%;
+        }
     </style>
 </head>
 <body>
@@ -67,18 +104,17 @@
                 heightUnit: 'in',
                 dpi: this.props.dpi
             }, d.div({
-                style: { display: 'flex', flexFlow: 'column nowrap', minHeight: '100%' }
+                className: 'flex-column min-height-100'
             }, [
                 d.h1({
                     key: 1,
-                    style: { flex: 'none' }
+                    className: 'no-flex'
                 }, 'Heading 1'),
 
                 d.div({
                     key: 2,
+                    className: 'min-height-0 flex-grow',
                     style: {
-                        flex: '1 0',
-                        minHeight: 0,
                         backgroundColor: 'red'
                     }
                 }, [
@@ -87,15 +123,18 @@
 
                 d.div({
                     key: 3,
-                    style: { flex: 'none', display: 'flex', backgroundColor: 'yellow', minHeight: 0 }
+                    className: 'no-flex flex-row',
+                    style: {
+                        backgroundColor: 'yellow'
+                    }
                 }, [
-                    d.div({ key: 1, style: { flex: '1 1 50%' } }, d.table({}, [
+                    d.div({ key: 1, className: 'flex-50' }, d.table({}, [
                         d.thead({ key: 1 }, d.tr({}, [ d.th({ key: 1 }, 'Hello'), d.th({ key: 2 }, 'World') ])),
                         d.tbody({ key: 2 }, [
                             d.tr({ key: 1 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ])
                         ])
                     ])),
-                    d.div({ key: 2, style: { flex: '1 1 50%' } }, d.table({}, [
+                    d.div({ key: 2, className: 'flex-50' }, d.table({}, [
                         d.thead({ key: 1 }, d.tr({}, [ d.th({ key: 1 }, 'Hello'), d.th({ key: 2 }, 'World') ])),
                         d.tbody({ key: 2 }, [
                             d.tr({ key: 1 }, [ d.td({ key: 1 }, 'Table'), d.td({ key: 2 }, 'Data') ]),
@@ -107,7 +146,7 @@
 
                 d.h3({
                     key: 4,
-                    style: { flex: 'none', minHeight: 0 }
+                    className: 'no-flex'
                 }, 'Footer')
             ]));
         },
