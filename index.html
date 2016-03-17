@@ -86,13 +86,74 @@
     var rpd = React.createFactory(ReactPageDiv),
             d = React.DOM;
 
+    var AutoResizeTextArea = React.createFactory(React.createClass({
+        displayName: 'Autoresizing TextArea',
+
+        propTypes: {
+            height: React.PropTypes.number.isRequired,
+            onChangeHeight: React.PropTypes.func.isRequired
+        },
+
+        getDefaultProps: function () {
+            return {
+                height: 0
+            };
+        },
+
+        componentDidMount: function () {
+            this.calculateHeight();
+        },
+
+        componentDidUpdate: function () {
+            this.calculateHeight();
+        },
+
+        calculateHeight: function () {
+            const hiddenScrollHeight = this.refs.hidden.scrollHeight;
+            if (typeof hiddenScrollHeight !== 'number') {
+                return;
+            }
+            if (hiddenScrollHeight !== this.props.height) {
+                this.props.onChangeHeight(hiddenScrollHeight);
+            }
+        },
+
+        render: function () {
+            return React.DOM.span({}, [
+                // render the same textarea twice, once with no height
+                React.DOM.textarea(Object.assign({}, this.props, {
+                    key: 'visible',
+                    style: Object.assign({}, this.props.style, { resize: 'none', height: this.props.height })
+                })),
+
+                React.DOM.textarea(Object.assign({}, this.props, {
+                    key: 'hidden',
+                    ref: 'hidden',
+                    // used only to calculate the height of the input
+                    style: Object.assign({}, this.props.style, {
+                        resize: 'none', visibility: 'hidden', position: 'absolute', height: 0
+                    })
+                }))
+            ]);
+        }
+    }));
+
     var PageDemo = React.createClass({
         displayName: 'Page Demo',
 
         getInitialState: function () {
             return {
-                height: 100
+                height: 100,
+                textarea: '',
+                textareaHeight: 10
             };
+        },
+
+        handleChange: function (e) {
+            this.setState({ textarea: e.target.value });
+        },
+        handleChangeHeight: function (height) {
+            this.setState({ textareaHeight: height });
         },
 
         getPages: function () {
@@ -102,7 +163,8 @@
                 widthUnit: 'in',
                 height: this.props.pageHeight,
                 heightUnit: 'in',
-                dpi: this.props.dpi
+                dpi: this.props.dpi,
+                pageMarkerClassName: 'hidden-print'
             }, d.div({
                 className: 'flex-column min-height-100'
             }, [
@@ -118,7 +180,18 @@
                         backgroundColor: 'red'
                     }
                 }, [
-                    d.div({ key: 1, style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello')
+                    d.div({ key: 1, style: { minHeight: this.state.height, backgroundColor: 'pink' } }, 'hello'),
+                    AutoResizeTextArea({
+                        key: 'textarea',
+                        value: this.state.textarea, onChange: this.handleChange, minHeight: 100, style: {
+                            backgroundColor: 'transparent',
+                            outline: 'none',
+                            border: 'none',
+                            width: '100%'
+                        },
+                        height: this.state.textareaHeight,
+                        onChangeHeight: this.handleChangeHeight
+                    })
                 ]),
 
                 d.div({

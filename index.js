@@ -40,7 +40,7 @@ module.exports = React.createClass({
       pageMarkerStyle: {
         borderTop: '2px dashed rgba(0,0,0,0.5)'
       },
-      pageMarkerClassName: ''
+      pageMarkerClassName: null
     };
   },
 

@@ -1,4 +1,4 @@
-var React = require('react'),
+const React = require('react'),
   d = React.DOM,
   dom = require('react-dom'),
   PageDiv = require('./index'),
@@ -6,9 +6,9 @@ var React = require('react'),
   assert = require('assert'),
   jsdom = require('jsdom').jsdom;
 
-
 window = jsdom('<html><body><div id="test-container"></div></body></html>').defaultView;
-var testContainer = window.document.getElementById('test-container');
+
+const testContainer = window.document.getElementById('test-container');
 
 describe('exports', function () {
   it('should be a function', function () {
@@ -16,7 +16,6 @@ describe('exports', function () {
     assert(typeof PageDivFactory === 'function');
   });
 });
-
 
 describe('height calculation', function () {
   it('should calculate some increment of page height', function (done) {
