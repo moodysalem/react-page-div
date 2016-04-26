@@ -1,13 +1,11 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: "./index.jsx",
+  entry: "./demo.jsx",
 
   output: {
     path: "./dist",
-    filename: "ReactPageDiv.js",
-    library: "ReactPageDiv",
-    libraryTarget: "umd"
+    filename: "Demo.js"
   },
 
   module: {
@@ -21,6 +19,7 @@ module.exports = {
   },
 
   externals: {
-    'react': { commonjs: 'react', commonjs2: 'react', amd: 'react', root: 'React' }
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   }
 };
