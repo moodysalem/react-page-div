@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/moodysalem/react-page-div#readme",
   "peerDependencies": {
-    "react": "^0.14.8"
+    "react": "^15.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.7.7",
