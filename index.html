@@ -6,6 +6,73 @@
 
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.min.css" rel="stylesheet"/>
+
+        <style>
+            .RichEditor-root {
+                background: #fff;
+                border: 1px solid #ddd;
+                font-family: 'Georgia', serif;
+                font-size: 14px;
+                padding: 15px;
+            }
+
+            .RichEditor-editor {
+                border-top: 1px solid #ddd;
+                cursor: text;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            .RichEditor-editor .public-DraftEditorPlaceholder-root,
+            .RichEditor-editor .public-DraftEditor-content {
+                margin: 0 -15px -15px;
+                padding: 15px;
+            }
+
+            .RichEditor-editor .public-DraftEditor-content {
+                min-height: 100px;
+            }
+
+            .RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+                display: none;
+            }
+
+            .RichEditor-editor .RichEditor-blockquote {
+                border-left: 5px solid #eee;
+                color: #666;
+                font-family: 'Hoefler Text', 'Georgia', serif;
+                font-style: italic;
+                margin: 16px 0;
+                padding: 10px 20px;
+            }
+
+            .RichEditor-editor .public-DraftStyleDefault-pre {
+                background-color: rgba(0, 0, 0, 0.05);
+                font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+                font-size: 16px;
+                padding: 20px;
+            }
+
+            .RichEditor-controls {
+                font-family: 'Helvetica', sans-serif;
+                font-size: 14px;
+                margin-bottom: 5px;
+                user-select: none;
+            }
+
+            .RichEditor-styleButton {
+                color: #999;
+                cursor: pointer;
+                margin-right: 16px;
+                padding: 2px 0;
+                display: inline-block;
+            }
+
+            .RichEditor-activeButton {
+                color: #5890ff;
+            }
+        </style>
+
         <style>
             * {
                 margin: 0;
@@ -41,14 +108,18 @@
     <body>
         <div id="demo"></div>
 
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"
                 integrity="sha256-G7beLBWueLFF3TpRNYF+pHsXjZKBYXRnbr1/PWZMuZs= sha384-PcrCc8vAh3jounTGQGibvUE4liSu8s91ycPotf/cfEHdSnq9qaW2c9tFr3oyDzW4 sha512-16bW0/SLFqiVplbCEQ1fDu6qi6Nn2Qx7GdDN2PBciMofFwBNNFjBEMhUUEtXodrmxHWZ5+T1VbWAnVi9GsWHEA=="
                 crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"
                 integrity="sha256-BHkAnK/hAlL2CK2fzYyXXsyy/MP9NJ935bWghWAkVX8= sha384-ukADzi8g85qHW1NDinecbLJu/a+yfhgXK6G2Kl7vCckNICr4Pt1hN7mpfPzsgbD2 sha512-h03W2AaAyBuIhy/HBK3bgT7gaIPOasQEH2K0hxPatnMt/03lu0uM39exrfdmEH7V4EM/J9LvAHj7IShoIjNM/Q=="
                 crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"
-                integrity="sha256-m08q2xO2R0aeibb2C0GfTjpky+ZgvfKWzNQbj/2zJaY= sha384-AqHTmhDKH0mcYS39ytwkmEeybi3G8i0bfpCaJmI8LqoF9ZtwEB9rxiG9Pn45WsMd sha512-kaDP6dcDG3+X87m9SnhyJzwBMKrYnd2tLJjGdBrZ9yEL8Zcl2iJRsPwylLkbd2g3QC5S8efV3sgwI5r73U0HnA=="
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.min.js"
+                integrity="sha384-TaopJbw5ytdNAPKhFKas7GHvnQ/mtR6oay1LGKETfwAvOj+JP1SUOLV59YU2pviL"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/draft-js/0.5.0/Draft.min.js"
+                integrity="sha384-/FWrh3Oo3Aa7LE++hywFM3+3/2UyelKHJRvtijjG6UoHw7dKMTMscIH114/WDb2O"
                 crossorigin="anonymous"></script>
 
         <script src="dist/Demo.js"></script>

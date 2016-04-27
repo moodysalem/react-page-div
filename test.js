@@ -1,6 +1,6 @@
 const React = require('react'),
-  d = React.DOM,
-  dom = require('react-dom'),
+  DOM = React.DOM,
+  ReactDOM = require('react-dom'),
   PageDiv = require('./index'),
   PageDivFactory = React.createFactory(PageDiv),
   assert = require('assert'),
@@ -19,12 +19,12 @@ describe('exports', function () {
 
 describe('height calculation', function () {
   it('should calculate some increment of page height', function (done) {
-    dom.render(PageDivFactory({
+    ReactDOM.render(PageDivFactory({
       height: 11,
       heightUnit: 'in',
       width: 8.5,
       widthUnit: 'in'
-    }, d.div({ height: 400 }, 'Hello World')), testContainer);
+    }, DOM.div({ height: 400 }, 'Hello World')), testContainer);
 
     //console.log(testContainer.innerHTML);
   });
