@@ -4,31 +4,53 @@
         <meta charset="UTF-8">
         <title>Demo React Page Div</title>
 
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.min.css" rel="stylesheet"/>
         <style>
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
             }
+
             body {
                 background-color: #333;
             }
 
+            /* simulate printout styles */
             .paper {
                 background-color: white;
                 box-shadow: 0 0 2px #333;
             }
 
-            .container {
-                margin: 0 auto;
+            .window-padding-5 {
+                padding: 5px;
+            }
+
+            @media print {
+                .hidden-print {
+                    display: none;
+                }
+
+                .window-padding-5 {
+                    padding: 0;
+                }
             }
         </style>
     </head>
     <body>
         <div id="demo"></div>
 
-        <script src="https://fb.me/react-15.0.1.js"></script>
-        <script src="https://fb.me/react-dom-15.0.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"
+                integrity="sha256-G7beLBWueLFF3TpRNYF+pHsXjZKBYXRnbr1/PWZMuZs= sha384-PcrCc8vAh3jounTGQGibvUE4liSu8s91ycPotf/cfEHdSnq9qaW2c9tFr3oyDzW4 sha512-16bW0/SLFqiVplbCEQ1fDu6qi6Nn2Qx7GdDN2PBciMofFwBNNFjBEMhUUEtXodrmxHWZ5+T1VbWAnVi9GsWHEA=="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"
+                integrity="sha256-BHkAnK/hAlL2CK2fzYyXXsyy/MP9NJ935bWghWAkVX8= sha384-ukADzi8g85qHW1NDinecbLJu/a+yfhgXK6G2Kl7vCckNICr4Pt1hN7mpfPzsgbD2 sha512-h03W2AaAyBuIhy/HBK3bgT7gaIPOasQEH2K0hxPatnMt/03lu0uM39exrfdmEH7V4EM/J9LvAHj7IShoIjNM/Q=="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"
+                integrity="sha256-m08q2xO2R0aeibb2C0GfTjpky+ZgvfKWzNQbj/2zJaY= sha384-AqHTmhDKH0mcYS39ytwkmEeybi3G8i0bfpCaJmI8LqoF9ZtwEB9rxiG9Pn45WsMd sha512-kaDP6dcDG3+X87m9SnhyJzwBMKrYnd2tLJjGdBrZ9yEL8Zcl2iJRsPwylLkbd2g3QC5S8efV3sgwI5r73U0HnA=="
+                crossorigin="anonymous"></script>
+
         <script src="dist/Demo.js"></script>
     </body>
 </html>

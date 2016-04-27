@@ -50,9 +50,6 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	//console.log(React);
-
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -81,31 +78,64 @@
 	  );
 	};
 
+	var STARTING = '# Keys to win\n\n* Make a good effort\n* Don\'t drop the ball\n* Score points\n\n** Don\'t lose **\n\n_play good_\n\n___\n\n\nThis is WYSIWYP';
+
+	var MarkdownRenderer = function MarkdownRenderer(props) {
+	  return _react2.default.createElement('div', _extends({}, props, { dangerouslySetInnerHTML: { __html: markdown.toHTML(props.value) } }));
+	};
+
 	var Demo = function (_Component) {
 	  _inherits(Demo, _Component);
 
-	  function Demo() {
+	  function Demo(props, context) {
 	    _classCallCheck(this, Demo);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Demo).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Demo).call(this, props, context));
+
+	    _this.state = {
+	      markdown: STARTING
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Demo, [{
+	    key: 'handleMarkdownChange',
+	    value: function handleMarkdownChange(value) {
+	      this.setState({
+	        markdown: value
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
+	      var markdown = this.state.markdown;
+
+
 	      return _react2.default.createElement(
-	        Letter,
-	        { className: 'paper container' },
-	        'Hello World',
+	        'div',
+	        { style: { display: 'flex' } },
 	        _react2.default.createElement(
 	          'div',
-	          { style: { backgroundColor: 'pink', height: 1100 } },
-	          'More Content'
+	          { style: { flex: '1 1', position: 'relative' }, className: 'hidden-print' },
+	          _react2.default.createElement(
+	            'div',
+	            { style: { position: 'absolute', top: 5, bottom: 5, left: 5, right: 5 } },
+	            _react2.default.createElement('textarea', { style: { width: '100%', height: '100%' }, value: markdown,
+	              onChange: function onChange(e) {
+	                return _this2.setState({ markdown: e.target.value });
+	              } })
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { style: { backgroundColor: 'aliceblue', height: 200 } },
-	          'Print Me'
+	          { style: { flex: '0' }, className: 'window-padding-5' },
+	          _react2.default.createElement(
+	            Letter,
+	            { className: 'paper' },
+	            _react2.default.createElement(MarkdownRenderer, { value: markdown })
+	          )
 	        )
 	      );
 	    }
