@@ -1,7 +1,7 @@
 import React, { DOM, PropTypes, Component, createFactory } from 'react';
 
 const assign = require('object-assign'),
-  ALLOWED_UNITS = PropTypes.oneOf([ 'in', 'px', 'cm' ]),
+  ALLOWED_UNITS = PropTypes.oneOf([ 'in', 'px', 'cm', 'mm' ]),
   INCHES_TO_CENTIMETERS = 2.54;
 
 class ReactPageDiv extends Component {
@@ -69,6 +69,8 @@ class ReactPageDiv extends Component {
       heightUnitHeight = scrollHeight;
     } else if (heightUnit === 'cm') {
       heightUnitHeight = (scrollHeight / dpi) * INCHES_TO_CENTIMETERS;
+    } else if (heightUnit === 'mm') {
+      heightUnitHeight = (scrollHeight / dpi) * INCHES_TO_CENTIMETERS * 10;
     }
 
     // calculate the number of increments of one page that we should extend

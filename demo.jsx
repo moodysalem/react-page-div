@@ -3,8 +3,17 @@ import ReactDOM from 'react-dom';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
-import ReactPageDiv from './dist/ReactPageDiv';
+import ReactPageDiv from './index.jsx';
 
+// Custom overrides for "code" style.
+const styleMap = {
+  CODE: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2
+  }
+};
 
 class RichEditorWithControls extends React.Component {
   constructor(props) {
@@ -88,16 +97,6 @@ class RichEditorWithControls extends React.Component {
   }
 }
 
-// Custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2
-  }
-};
-
 function getBlockStyle(block) {
   switch (block.getType()) {
     case 'blockquote':
@@ -108,23 +107,23 @@ function getBlockStyle(block) {
 }
 
 class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
+  onToggle(e) {
+    e.preventDefault();
+    const { onToggle, style } = this.props;
+    onToggle(style);
   }
 
   render() {
+    const { label, active } = this.props;
+
     let className = 'RichEditor-styleButton';
-    if (this.props.active) {
+    if (active) {
       className += ' RichEditor-activeButton';
     }
 
     return (
-      <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
+      <span className={className} onMouseDown={(e) => this.onToggle(e)}>
+        {label}
       </span>
     );
   }
@@ -140,7 +139,7 @@ const BLOCK_TYPES = [
 ];
 
 const BlockStyleControls = (props) => {
-  const {editorState} = props,
+  const { editorState, onToggle } = props,
     selection = editorState.getSelection(),
     blockType = editorState
       .getCurrentContent()
@@ -149,9 +148,10 @@ const BlockStyleControls = (props) => {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map((type) =>
-        <StyleButton active={type.style === blockType} label={type.label} onToggle={props.onToggle} style={type.style}/>
-      )}
+      {BLOCK_TYPES.map((type) => {
+        const { style, label } = type;
+        return <StyleButton key={label} active={style === blockType} label={label} onToggle={onToggle} style={style}/>;
+      })}
     </div>
   );
 };
@@ -164,30 +164,43 @@ const INLINE_STYLES = [
 ];
 
 const InlineStyleControls = (props) => {
-  const currentStyle = props.editorState.getCurrentInlineStyle();
+  const { editorState, onToggle } = props,
+    currentStyle = editorState.getCurrentInlineStyle();
+
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type =>
-        <StyleButton
-          active={currentStyle.has(type.style)} label={type.label} onToggle={props.onToggle} style={type.style}
-        />
-      )}
+      {INLINE_STYLES.map(type => {
+        const { label, style } = type;
+        return (
+          <StyleButton key={label} active={currentStyle.has(style)} label={label} onToggle={onToggle} style={style}/>
+        );
+      })}
     </div>
   );
 };
 
+const PaperSize = (props) => {
+  const { width, widthUnit, height, heightUnit } = props.paperSize;
+  return (
+    <ReactPageDiv {...props} width={width} widthUnit={widthUnit} height={height} heightUnit={heightUnit}>
+      {props.children}
+    </ReactPageDiv>
+  );
+};
 
-const Letter = (props) => {
-  return <ReactPageDiv width={8.5} height={11} {...props}>{props.children}</ReactPageDiv>;
+const PAGE_SIZES = {
+  Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
+  Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
+  A4: { width: 210, widthUnit: 'mm', height: 297, heightUnit: 'mm' }
 };
 
 class Demo extends Component {
-
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      paperSize: 'Letter'
     };
   }
 
@@ -196,13 +209,20 @@ class Demo extends Component {
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState, paperSize } = this.state;
 
     return (
       <div style={{display: 'flex'}}>
         <div style={{ flex: '1 1', position: 'relative' }} className="hidden-print">
           <div
             style={{ display: 'flex', flexFlow: 'column', position: 'absolute', top: 5, bottom: 5, left: 5, right: 5, overflow: 'auto' }}>
+            <div key="select" style={{ flex: 'none'}}>
+              <select value={paperSize} onChange={(e) => this.setState({ paperSize: e.target.value })}>
+                {
+                  Object.keys(PAGE_SIZES).map((size) => <option key={size} value={size}>{size}</option>)
+                }
+              </select>
+            </div>
             <div style={{backgroundColor: 'white'}}>
               <RichEditorWithControls onChange={(editorState) => this.setState({ editorState })}
                                       editorState={editorState}/>
@@ -210,9 +230,9 @@ class Demo extends Component {
           </div>
         </div>
         <div style={{ flex: 'none' }} className="window-padding-5">
-          <Letter className="paper">
+          <PaperSize className="paper" paperSize={PAGE_SIZES[paperSize]}>
             <div dangerouslySetInnerHTML={{ __html: stateToHTML(editorState.getCurrentContent()) }}></div>
-          </Letter>
+          </PaperSize>
         </div>
       </div>
     );

@@ -62,9 +62,9 @@
 
 	var _draftJsExportHtml = __webpack_require__(4);
 
-	var _ReactPageDiv = __webpack_require__(13);
+	var _index = __webpack_require__(13);
 
-	var _ReactPageDiv2 = _interopRequireDefault(_ReactPageDiv);
+	var _index2 = _interopRequireDefault(_index);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73,6 +73,16 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// Custom overrides for "code" style.
+	var styleMap = {
+	  CODE: {
+	    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+	    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+	    fontSize: 16,
+	    padding: 2
+	  }
+	};
 
 	var RichEditorWithControls = function (_React$Component) {
 	  _inherits(RichEditorWithControls, _React$Component);
@@ -177,18 +187,6 @@
 	  return RichEditorWithControls;
 	}(_react2.default.Component);
 
-	// Custom overrides for "code" style.
-
-
-	var styleMap = {
-	  CODE: {
-	    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-	    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-	    fontSize: 16,
-	    padding: 2
-	  }
-	};
-
 	function getBlockStyle(block) {
 	  switch (block.getType()) {
 	    case 'blockquote':
@@ -204,27 +202,40 @@
 	  function StyleButton() {
 	    _classCallCheck(this, StyleButton);
 
-	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(StyleButton).call(this));
-
-	    _this3.onToggle = function (e) {
-	      e.preventDefault();
-	      _this3.props.onToggle(_this3.props.style);
-	    };
-	    return _this3;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StyleButton).apply(this, arguments));
 	  }
 
 	  _createClass(StyleButton, [{
+	    key: 'onToggle',
+	    value: function onToggle(e) {
+	      e.preventDefault();
+	      var _props = this.props;
+	      var onToggle = _props.onToggle;
+	      var style = _props.style;
+
+	      onToggle(style);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this4 = this;
+
+	      var _props2 = this.props;
+	      var label = _props2.label;
+	      var active = _props2.active;
+
+
 	      var className = 'RichEditor-styleButton';
-	      if (this.props.active) {
+	      if (active) {
 	        className += ' RichEditor-activeButton';
 	      }
 
 	      return _react2.default.createElement(
 	        'span',
-	        { className: className, onMouseDown: this.onToggle },
-	        this.props.label
+	        { className: className, onMouseDown: function onMouseDown(e) {
+	            return _this4.onToggle(e);
+	          } },
+	        label
 	      );
 	    }
 	  }]);
@@ -236,6 +247,7 @@
 
 	var BlockStyleControls = function BlockStyleControls(props) {
 	  var editorState = props.editorState;
+	  var onToggle = props.onToggle;
 	  var selection = editorState.getSelection();
 	  var blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
 
@@ -243,7 +255,10 @@
 	    'div',
 	    { className: 'RichEditor-controls' },
 	    BLOCK_TYPES.map(function (type) {
-	      return _react2.default.createElement(StyleButton, { active: type.style === blockType, label: type.label, onToggle: props.onToggle, style: type.style });
+	      var style = type.style;
+	      var label = type.label;
+
+	      return _react2.default.createElement(StyleButton, { key: label, active: style === blockType, label: label, onToggle: onToggle, style: style });
 	    })
 	  );
 	};
@@ -251,24 +266,40 @@
 	var INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }, { label: 'Underline', style: 'UNDERLINE' }, { label: 'Monospace', style: 'CODE' }];
 
 	var InlineStyleControls = function InlineStyleControls(props) {
-	  var currentStyle = props.editorState.getCurrentInlineStyle();
+	  var editorState = props.editorState;
+	  var onToggle = props.onToggle;
+	  var currentStyle = editorState.getCurrentInlineStyle();
+
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'RichEditor-controls' },
 	    INLINE_STYLES.map(function (type) {
-	      return _react2.default.createElement(StyleButton, {
-	        active: currentStyle.has(type.style), label: type.label, onToggle: props.onToggle, style: type.style
-	      });
+	      var label = type.label;
+	      var style = type.style;
+
+	      return _react2.default.createElement(StyleButton, { key: label, active: currentStyle.has(style), label: label, onToggle: onToggle, style: style });
 	    })
 	  );
 	};
 
-	var Letter = function Letter(props) {
+	var PaperSize = function PaperSize(props) {
+	  var _props$paperSize = props.paperSize;
+	  var width = _props$paperSize.width;
+	  var widthUnit = _props$paperSize.widthUnit;
+	  var height = _props$paperSize.height;
+	  var heightUnit = _props$paperSize.heightUnit;
+
 	  return _react2.default.createElement(
-	    _ReactPageDiv2.default,
-	    _extends({ width: 8.5, height: 11 }, props),
+	    _index2.default,
+	    _extends({}, props, { width: width, widthUnit: widthUnit, height: height, heightUnit: heightUnit }),
 	    props.children
 	  );
+	};
+
+	var PAGE_SIZES = {
+	  Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
+	  Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
+	  A4: { width: 210, widthUnit: 'mm', height: 297, heightUnit: 'mm' }
 	};
 
 	var Demo = function (_Component) {
@@ -277,12 +308,13 @@
 	  function Demo(props, context) {
 	    _classCallCheck(this, Demo);
 
-	    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Demo).call(this, props, context));
+	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Demo).call(this, props, context));
 
-	    _this4.state = {
-	      editorState: _draftJs.EditorState.createEmpty()
+	    _this5.state = {
+	      editorState: _draftJs.EditorState.createEmpty(),
+	      paperSize: 'Letter'
 	    };
-	    return _this4;
+	    return _this5;
 	  }
 
 	  _createClass(Demo, [{
@@ -293,9 +325,11 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this5 = this;
+	      var _this6 = this;
 
-	      var editorState = this.state.editorState;
+	      var _state = this.state;
+	      var editorState = _state.editorState;
+	      var paperSize = _state.paperSize;
 
 
 	      return _react2.default.createElement(
@@ -310,9 +344,26 @@
 	              style: { display: 'flex', flexFlow: 'column', position: 'absolute', top: 5, bottom: 5, left: 5, right: 5, overflow: 'auto' } },
 	            _react2.default.createElement(
 	              'div',
+	              { key: 'select', style: { flex: 'none' } },
+	              _react2.default.createElement(
+	                'select',
+	                { value: paperSize, onChange: function onChange(e) {
+	                    return _this6.setState({ paperSize: e.target.value });
+	                  } },
+	                Object.keys(PAGE_SIZES).map(function (size) {
+	                  return _react2.default.createElement(
+	                    'option',
+	                    { key: size, value: size },
+	                    size
+	                  );
+	                })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
 	              { style: { backgroundColor: 'white' } },
 	              _react2.default.createElement(RichEditorWithControls, { onChange: function onChange(editorState) {
-	                  return _this5.setState({ editorState: editorState });
+	                  return _this6.setState({ editorState: editorState });
 	                },
 	                editorState: editorState })
 	            )
@@ -322,8 +373,8 @@
 	          'div',
 	          { style: { flex: 'none' }, className: 'window-padding-5' },
 	          _react2.default.createElement(
-	            Letter,
-	            { className: 'paper' },
+	            PaperSize,
+	            { className: 'paper', paperSize: PAGE_SIZES[paperSize] },
 	            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } })
 	          )
 	        )
@@ -1183,373 +1234,308 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function webpackUniversalModuleDefinition(root, factory) {
-		if(true)
-			module.exports = factory(__webpack_require__(1));
-		else if(typeof define === 'function' && define.amd)
-			define(["react"], factory);
-		else if(typeof exports === 'object')
-			exports["ReactPageDiv"] = factory(require("react"));
-		else
-			root["ReactPageDiv"] = factory(root["React"]);
-	})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
-	return /******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
+	'use strict';
 
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ReactPageDivFactory = undefined;
 
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId])
-	/******/ 			return installedModules[moduleId].exports;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			exports: {},
-	/******/ 			id: moduleId,
-	/******/ 			loaded: false
-	/******/ 		};
+	var _react = __webpack_require__(1);
 
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	var _react2 = _interopRequireDefault(_react);
 
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.loaded = true;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
+	var assign = __webpack_require__(14),
+	    ALLOWED_UNITS = _react.PropTypes.oneOf(['in', 'px', 'cm', 'mm']),
+	    INCHES_TO_CENTIMETERS = 2.54;
 
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "";
+	var ReactPageDiv = function (_Component) {
+	  _inherits(ReactPageDiv, _Component);
+
+	  function ReactPageDiv(props, context) {
+	    _classCallCheck(this, ReactPageDiv);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReactPageDiv).call(this, props, context));
+
+	    _this.state = {
+	      increments: 1,
+	      calculateTimer: null
+	    };
+	    return _this;
+	  }
+
+	  /**
+	   * When mounting, start off the timer for checking the height
+	   */
+
+
+	  _createClass(ReactPageDiv, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.checkHeight();
+	    }
+
+	    /**
+	     * Whenever updated, we need to recalculate our height immediately
+	     * @param prevProps
+	     * @param prevState
+	     */
+
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      this.calculateHeight();
+
+	      // we weren't running the check timer so kick it back off
+	      if (prevProps.calculateTimer === null) {
+	        this.checkHeight();
+	      }
+	    }
+
+	    /**
+	     * This function checks height on an interval
+	     */
+
+	  }, {
+	    key: 'checkHeight',
+	    value: function checkHeight() {
+	      var _this2 = this;
+
+	      this.calculateHeight();
+
+	      var checkInterval = this.props.checkInterval;
+
+
+	      if (checkInterval !== null) {
+	        var calculateTimer = setTimeout(function () {
+	          return _this2.checkHeight();
+	        }, checkInterval);
+
+	        this.setState({ calculateTimer: calculateTimer });
+	      }
+	    }
+	  }, {
+	    key: 'calculateHeight',
+	    value: function calculateHeight() {
+	      var hidden = this.refs.hidden;
+	      var _props = this.props;
+	      var heightUnit = _props.heightUnit;
+	      var dpi = _props.dpi;
+	      var height = _props.height;
+	      var increments = this.state.increments;
+	      var scrollHeight = hidden.scrollHeight;
+
 
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(0);
-	/******/ })
-	/************************************************************************/
-	/******/ ([
-	/* 0 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		'use strict';
-
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.ReactPageDivFactory = undefined;
-
-		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-		var _react = __webpack_require__(1);
-
-		var _react2 = _interopRequireDefault(_react);
-
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-		var assign = __webpack_require__(2),
-		    ALLOWED_UNITS = _react.PropTypes.oneOf(['in', 'px', 'cm']),
-		    INCHES_TO_CENTIMETERS = 2.54;
-
-		var ReactPageDiv = function (_Component) {
-		  _inherits(ReactPageDiv, _Component);
-
-		  function ReactPageDiv(props, context) {
-		    _classCallCheck(this, ReactPageDiv);
-
-		    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReactPageDiv).call(this, props, context));
-
-		    _this.state = {
-		      increments: 1,
-		      calculateTimer: null
-		    };
-		    return _this;
-		  }
-
-		  /**
-		   * When mounting, start off the timer for checking the height
-		   */
-
-
-		  _createClass(ReactPageDiv, [{
-		    key: 'componentDidMount',
-		    value: function componentDidMount() {
-		      this.checkHeight();
-		    }
-
-		    /**
-		     * Whenever updated, we need to recalculate our height immediately
-		     * @param prevProps
-		     * @param prevState
-		     */
-
-		  }, {
-		    key: 'componentDidUpdate',
-		    value: function componentDidUpdate(prevProps, prevState) {
-		      this.calculateHeight();
-
-		      // we weren't running the check timer so kick it back off
-		      if (prevProps.calculateTimer === null) {
-		        this.checkHeight();
-		      }
-		    }
-
-		    /**
-		     * This function checks height on an interval
-		     */
-
-		  }, {
-		    key: 'checkHeight',
-		    value: function checkHeight() {
-		      var _this2 = this;
-
-		      this.calculateHeight();
-
-		      var checkInterval = this.props.checkInterval;
-
-
-		      if (checkInterval !== null) {
-		        var calculateTimer = setTimeout(function () {
-		          return _this2.checkHeight();
-		        }, checkInterval);
-
-		        this.setState({ calculateTimer: calculateTimer });
-		      }
-		    }
-		  }, {
-		    key: 'calculateHeight',
-		    value: function calculateHeight() {
-		      var hidden = this.refs.hidden;
-		      var _props = this.props;
-		      var heightUnit = _props.heightUnit;
-		      var dpi = _props.dpi;
-		      var height = _props.height;
-		      var increments = this.state.increments;
-		      var scrollHeight = hidden.scrollHeight;
-
-
-		      if (typeof scrollHeight === 'undefined') {
-		        return;
-		      }
-
-		      // calculate the height of the page in pixels based on the dpi
-		      var heightUnitHeight = void 0;
-
-		      if (heightUnit === 'in') {
-		        heightUnitHeight = scrollHeight / dpi;
-		      } else if (heightUnit === 'px') {
-		        heightUnitHeight = scrollHeight;
-		      } else if (heightUnit === 'cm') {
-		        heightUnitHeight = scrollHeight / dpi * INCHES_TO_CENTIMETERS;
-		      }
-
-		      // calculate the number of increments of one page that we should extend
-		      var newIncrements = Math.ceil(heightUnitHeight / height);
-		      if (increments !== newIncrements) {
-		        this.setState({ increments: newIncrements });
-		      }
-		    }
-		  }, {
-		    key: 'getPageMarkers',
-		    value: function getPageMarkers() {
-		      var increments = this.state.increments;
-		      var _props2 = this.props;
-		      var pageMarkerClassName = _props2.pageMarkerClassName;
-		      var pageMarkerStyle = _props2.pageMarkerStyle;
-		      var height = _props2.height;
-		      var heightUnit = _props2.heightUnit;
-		      var pageMarkers = [];
-
-		      for (var i = 1; i < increments; i++) {
-		        var markerStyle = assign({}, pageMarkerStyle, {
-		          position: 'absolute',
-		          left: 0,
-		          right: 0,
-		          top: i * height + heightUnit
-		        });
-
-		        pageMarkers.push(_react2.default.createElement('div', { key: i, className: pageMarkerClassName, style: markerStyle }));
-		      }
-
-		      return pageMarkers;
-		    }
-		  }, {
-		    key: 'getWidth',
-		    value: function getWidth() {
-		      var _props3 = this.props;
-		      var width = _props3.width;
-		      var widthUnit = _props3.widthUnit;
-
-		      return width + widthUnit;
-		    }
-		  }, {
-		    key: 'getHiddenDiv',
-		    value: function getHiddenDiv() {
-		      var _props4 = this.props;
-		      var style = _props4.style;
-		      var className = _props4.className;
-		      var children = _props4.children;
-
-
-		      var divStyle = assign({}, style, {
-		        position: 'absolute',
-		        width: this.getWidth(),
-		        height: 0,
-		        visibility: 'hidden'
-		      });
-
-		      return _react2.default.createElement(
-		        'div',
-		        { key: 'hidden', ref: 'hidden', className: className, style: divStyle },
-		        children
-		      );
-		    }
-		  }, {
-		    key: 'getVisibleDiv',
-		    value: function getVisibleDiv() {
-		      var _props5 = this.props;
-		      var height = _props5.height;
-		      var className = _props5.className;
-		      var style = _props5.style;
-		      var heightUnit = _props5.heightUnit;
-		      var children = _props5.children;
-		      var increments = this.state.increments;
-
-
-		      var divStyle = assign({}, style, {
-		        overflow: 'hidden',
-		        position: 'relative',
-		        height: height * increments + heightUnit,
-		        width: this.getWidth()
-		      });
-
-		      return _react2.default.createElement(
-		        'div',
-		        { key: 'visible', ref: 'visible', className: className, style: divStyle },
-		        this.getPageMarkers(),
-		        children
-		      );
-		    }
-		  }, {
-		    key: 'render',
-		    value: function render() {
-		      return _react2.default.createElement(
-		        'div',
-		        null,
-		        this.getHiddenDiv(),
-		        this.getVisibleDiv()
-		      );
-		    }
-		  }]);
-
-		  return ReactPageDiv;
-		}(_react.Component);
-
-		ReactPageDiv.propTypes = {
-		  // the width of one page
-		  width: _react.PropTypes.number.isRequired,
-		  widthUnit: ALLOWED_UNITS,
-
-		  // the height of one page
-		  height: _react.PropTypes.number.isRequired,
-		  heightUnit: ALLOWED_UNITS,
-
-		  // the dpi of the user agent, used to convert inches to pixels
-		  dpi: _react.PropTypes.number.isRequired,
-
-		  // how often to verify the proper number of page increments are displayed in ms, or null if all dom updates are happening
-		  // through the div and no timer needs to be set
-		  checkInterval: _react.PropTypes.number,
-
-		  // the style to apply to the page break marker
-		  pageMarkerStyle: _react.PropTypes.object,
-		  pageMarkerClassName: _react.PropTypes.string
-		};
-
-		ReactPageDiv.defaultProps = {
-		  widthUnit: 'in',
-		  heightUnit: 'in',
-		  dpi: 96,
-		  checkInterval: null,
-		  pageMarkerStyle: {
-		    borderTop: '2px dashed rgba(0,0,0,0.5)'
-		  },
-		  pageMarkerClassName: null
-		};
-
-		exports.default = ReactPageDiv;
-
-		var ReactPageDivFactory = (0, _react.createFactory)(ReactPageDiv);
-		exports.ReactPageDivFactory = ReactPageDivFactory;
-
-	/***/ },
-	/* 1 */
-	/***/ function(module, exports) {
-
-		module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-	/***/ },
-	/* 2 */
-	/***/ function(module, exports) {
-
-		/* eslint-disable no-unused-vars */
-		'use strict';
-		var hasOwnProperty = Object.prototype.hasOwnProperty;
-		var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-		function toObject(val) {
-			if (val === null || val === undefined) {
-				throw new TypeError('Object.assign cannot be called with null or undefined');
-			}
-
-			return Object(val);
+	      if (typeof scrollHeight === 'undefined') {
+	        return;
+	      }
+
+	      // calculate the height of the page in pixels based on the dpi
+	      var heightUnitHeight = void 0;
+
+	      if (heightUnit === 'in') {
+	        heightUnitHeight = scrollHeight / dpi;
+	      } else if (heightUnit === 'px') {
+	        heightUnitHeight = scrollHeight;
+	      } else if (heightUnit === 'cm') {
+	        heightUnitHeight = scrollHeight / dpi * INCHES_TO_CENTIMETERS;
+	      } else if (heightUnit === 'mm') {
+	        heightUnitHeight = scrollHeight / dpi * INCHES_TO_CENTIMETERS * 10;
+	      }
+
+	      // calculate the number of increments of one page that we should extend
+	      var newIncrements = Math.ceil(heightUnitHeight / height);
+	      if (increments !== newIncrements) {
+	        this.setState({ increments: newIncrements });
+	      }
+	    }
+	  }, {
+	    key: 'getPageMarkers',
+	    value: function getPageMarkers() {
+	      var increments = this.state.increments;
+	      var _props2 = this.props;
+	      var pageMarkerClassName = _props2.pageMarkerClassName;
+	      var pageMarkerStyle = _props2.pageMarkerStyle;
+	      var height = _props2.height;
+	      var heightUnit = _props2.heightUnit;
+	      var pageMarkers = [];
+
+	      for (var i = 1; i < increments; i++) {
+	        var markerStyle = assign({}, pageMarkerStyle, {
+	          position: 'absolute',
+	          left: 0,
+	          right: 0,
+	          top: i * height + heightUnit
+	        });
+
+	        pageMarkers.push(_react2.default.createElement('div', { key: i, className: pageMarkerClassName, style: markerStyle }));
+	      }
+
+	      return pageMarkers;
+	    }
+	  }, {
+	    key: 'getWidth',
+	    value: function getWidth() {
+	      var _props3 = this.props;
+	      var width = _props3.width;
+	      var widthUnit = _props3.widthUnit;
+
+	      return width + widthUnit;
+	    }
+	  }, {
+	    key: 'getHiddenDiv',
+	    value: function getHiddenDiv() {
+	      var _props4 = this.props;
+	      var style = _props4.style;
+	      var className = _props4.className;
+	      var children = _props4.children;
+
+
+	      var divStyle = assign({}, style, {
+	        position: 'absolute',
+	        width: this.getWidth(),
+	        height: 0,
+	        visibility: 'hidden'
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { key: 'hidden', ref: 'hidden', className: className, style: divStyle },
+	        children
+	      );
+	    }
+	  }, {
+	    key: 'getVisibleDiv',
+	    value: function getVisibleDiv() {
+	      var _props5 = this.props;
+	      var height = _props5.height;
+	      var className = _props5.className;
+	      var style = _props5.style;
+	      var heightUnit = _props5.heightUnit;
+	      var children = _props5.children;
+	      var increments = this.state.increments;
+
+
+	      var divStyle = assign({}, style, {
+	        overflow: 'hidden',
+	        position: 'relative',
+	        height: height * increments + heightUnit,
+	        width: this.getWidth()
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { key: 'visible', ref: 'visible', className: className, style: divStyle },
+	        this.getPageMarkers(),
+	        children
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.getHiddenDiv(),
+	        this.getVisibleDiv()
+	      );
+	    }
+	  }]);
+
+	  return ReactPageDiv;
+	}(_react.Component);
+
+	ReactPageDiv.propTypes = {
+	  // the width of one page
+	  width: _react.PropTypes.number.isRequired,
+	  widthUnit: ALLOWED_UNITS,
+
+	  // the height of one page
+	  height: _react.PropTypes.number.isRequired,
+	  heightUnit: ALLOWED_UNITS,
+
+	  // the dpi of the user agent, used to convert inches to pixels
+	  dpi: _react.PropTypes.number.isRequired,
+
+	  // how often to verify the proper number of page increments are displayed in ms, or null if all dom updates are happening
+	  // through the div and no timer needs to be set
+	  checkInterval: _react.PropTypes.number,
+
+	  // the style to apply to the page break marker
+	  pageMarkerStyle: _react.PropTypes.object,
+	  pageMarkerClassName: _react.PropTypes.string
+	};
+
+	ReactPageDiv.defaultProps = {
+	  widthUnit: 'in',
+	  heightUnit: 'in',
+	  dpi: 96,
+	  checkInterval: null,
+	  pageMarkerStyle: {
+	    borderTop: '2px dashed rgba(0,0,0,0.5)'
+	  },
+	  pageMarkerClassName: null
+	};
+
+	exports.default = ReactPageDiv;
+
+	var ReactPageDivFactory = (0, _react.createFactory)(ReactPageDiv);
+	exports.ReactPageDivFactory = ReactPageDivFactory;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	/* eslint-disable no-unused-vars */
+	'use strict';
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
 		}
 
-		module.exports = Object.assign || function (target, source) {
-			var from;
-			var to = toObject(target);
-			var symbols;
+		return Object(val);
+	}
 
-			for (var s = 1; s < arguments.length; s++) {
-				from = Object(arguments[s]);
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
 
-				for (var key in from) {
-					if (hasOwnProperty.call(from, key)) {
-						to[key] = from[key];
-					}
-				}
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
 
-				if (Object.getOwnPropertySymbols) {
-					symbols = Object.getOwnPropertySymbols(from);
-					for (var i = 0; i < symbols.length; i++) {
-						if (propIsEnumerable.call(from, symbols[i])) {
-							to[symbols[i]] = from[symbols[i]];
-						}
-					}
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
 				}
 			}
 
-			return to;
-		};
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
 
+		return to;
+	};
 
-	/***/ }
-	/******/ ])
-	});
-	;
 
 /***/ }
 /******/ ]);

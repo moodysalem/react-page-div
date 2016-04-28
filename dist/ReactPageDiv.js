@@ -76,7 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var assign = __webpack_require__(2),
-	    ALLOWED_UNITS = _react.PropTypes.oneOf(['in', 'px', 'cm']),
+	    ALLOWED_UNITS = _react.PropTypes.oneOf(['in', 'px', 'cm', 'mm']),
 	    INCHES_TO_CENTIMETERS = 2.54;
 
 	var ReactPageDiv = function (_Component) {
@@ -169,6 +169,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        heightUnitHeight = scrollHeight;
 	      } else if (heightUnit === 'cm') {
 	        heightUnitHeight = scrollHeight / dpi * INCHES_TO_CENTIMETERS;
+	      } else if (heightUnit === 'mm') {
+	        heightUnitHeight = scrollHeight / dpi * INCHES_TO_CENTIMETERS * 10;
 	      }
 
 	      // calculate the number of increments of one page that we should extend
