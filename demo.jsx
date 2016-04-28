@@ -2,6 +2,7 @@ import React, { Component, PropTypes, createFactory } from 'react';
 import ReactDOM from 'react-dom';
 import { Editor, ContentState, ContentBlock, convertFromHTML, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import jsPDF from 'jspdf';
 
 import ReactPageDiv from './index.jsx';
 
@@ -233,6 +234,13 @@ class Demo extends Component {
     this.setState({ editorState });
   }
 
+  print() {
+    const { paper } = this.refs,
+      doc = new jsPDF();
+
+    doc.fromHTML(paper);
+  }
+
   render() {
     const { editorState, paperSize } = this.state;
 
@@ -247,6 +255,7 @@ class Demo extends Component {
                   Object.keys(PAGE_SIZES).map((size) => <option key={size} value={size}>{size}</option>)
                 }
               </select>
+              <button key="download" onClick={() => this.print()}>Download PDF</button>
             </div>
             <div style={{backgroundColor: 'white'}}>
               <RichEditorWithControls onChange={(editorState) => this.setState({ editorState })}
@@ -256,7 +265,7 @@ class Demo extends Component {
         </div>
         <div style={{ flex: 'none' }} className="window-padding-5">
           <PaperSize className="paper" paperSize={PAGE_SIZES[paperSize]}>
-            <div dangerouslySetInnerHTML={{ __html: stateToHTML(editorState.getCurrentContent()) }}></div>
+            <div ref="paper" dangerouslySetInnerHTML={{ __html: stateToHTML(editorState.getCurrentContent()) }}></div>
           </PaperSize>
         </div>
       </div>

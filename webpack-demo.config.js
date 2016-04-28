@@ -22,6 +22,7 @@ module.exports = {
     'react': 'React',
     'react-dom': 'ReactDOM',
     'draft-js': 'Draft',
-    'immutable': 'Immutable'
+    'immutable': 'Immutable',
+    'jspdf': 'jsPDF'
   }
 };

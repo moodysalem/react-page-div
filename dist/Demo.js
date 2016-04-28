@@ -62,6 +62,10 @@
 
 	var _draftJsExportHtml = __webpack_require__(4);
 
+	var _jspdf = __webpack_require__(15);
+
+	var _jspdf2 = _interopRequireDefault(_jspdf);
+
 	var _index = __webpack_require__(13);
 
 	var _index2 = _interopRequireDefault(_index);
@@ -327,6 +331,14 @@
 	      this.setState({ editorState: editorState });
 	    }
 	  }, {
+	    key: 'print',
+	    value: function print() {
+	      var paper = this.refs.paper;
+	      var doc = new _jspdf2.default();
+
+	      doc.fromHTML(paper);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this6 = this;
@@ -361,6 +373,13 @@
 	                    size
 	                  );
 	                })
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { key: 'download', onClick: function onClick() {
+	                    return _this6.print();
+	                  } },
+	                'Download PDF'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -379,7 +398,7 @@
 	          _react2.default.createElement(
 	            PaperSize,
 	            { className: 'paper', paperSize: PAGE_SIZES[paperSize] },
-	            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } })
+	            _react2.default.createElement('div', { ref: 'paper', dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } })
 	          )
 	        )
 	      );
@@ -1540,6 +1559,12 @@
 		return to;
 	};
 
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	module.exports = jsPDF;
 
 /***/ }
 /******/ ]);
