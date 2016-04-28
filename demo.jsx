@@ -2,7 +2,6 @@ import React, { Component, PropTypes, createFactory } from 'react';
 import ReactDOM from 'react-dom';
 import { Editor, ContentState, ContentBlock, convertFromHTML, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
-import jsPDF from 'jspdf';
 
 import ReactPageDiv from './index.jsx';
 
@@ -235,10 +234,7 @@ class Demo extends Component {
   }
 
   print() {
-    const { paper } = this.refs,
-      doc = new jsPDF();
-
-    doc.fromHTML(paper);
+    alert('does nothing yet...');
   }
 
   render() {

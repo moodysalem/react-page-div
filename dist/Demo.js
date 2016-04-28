@@ -62,11 +62,7 @@
 
 	var _draftJsExportHtml = __webpack_require__(4);
 
-	var _jspdf = __webpack_require__(15);
-
-	var _jspdf2 = _interopRequireDefault(_jspdf);
-
-	var _index = __webpack_require__(13);
+	var _index = __webpack_require__(14);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -333,10 +329,7 @@
 	  }, {
 	    key: 'print',
 	    value: function print() {
-	      var paper = this.refs.paper;
-	      var doc = new _jspdf2.default();
-
-	      doc.fromHTML(paper);
+	      alert('does nothing yet...');
 	    }
 	  }, {
 	    key: 'render',
@@ -1254,7 +1247,8 @@
 	};
 
 /***/ },
-/* 13 */
+/* 13 */,
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1278,7 +1272,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var assign = __webpack_require__(14),
+	var assign = __webpack_require__(15),
 	    ALLOWED_UNITS = _react.PropTypes.oneOf(['in', 'px', 'cm', 'mm']),
 	    INCHES_TO_CENTIMETERS = 2.54;
 
@@ -1516,7 +1510,7 @@
 	exports.ReactPageDivFactory = ReactPageDivFactory;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -1559,12 +1553,6 @@
 		return to;
 	};
 
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = jsPDF;
 
 /***/ }
 /******/ ]);
