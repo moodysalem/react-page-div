@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, createFactory } from 'react';
 import ReactDOM from 'react-dom';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, ContentState, ContentBlock, convertFromHTML, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
 import ReactPageDiv from './index.jsx';
@@ -191,15 +191,40 @@ const PaperSize = (props) => {
 const PAGE_SIZES = {
   Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
   Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
-  A4: { width: 210, widthUnit: 'mm', height: 297, heightUnit: 'mm' }
+  A4: { width: 210, widthUnit: 'mm', height: 296, heightUnit: 'mm' }
 };
+
+const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/>';
+
+const STARTER_HTML =
+  `
+  <h1>Hello World!</h1>
+  <p>This text will take multiple pages. <b>Here is some bold text.</b> <i>This is some italicized text.</i>
+  </p>
+  <br />
+  <p>More Text!</p><br/>
+
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  <p>${LOREM_IPSUM}</p>
+  `;
 
 class Demo extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState: EditorState.createWithContent(
+        ContentState.createFromBlockArray(
+          convertFromHTML(STARTER_HTML)
+        )
+      ),
       paperSize: 'Letter'
     };
   }

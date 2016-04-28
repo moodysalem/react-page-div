@@ -299,8 +299,12 @@
 	var PAGE_SIZES = {
 	  Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
 	  Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
-	  A4: { width: 210, widthUnit: 'mm', height: 297, heightUnit: 'mm' }
+	  A4: { width: 210, widthUnit: 'mm', height: 296, heightUnit: 'mm' }
 	};
+
+	var LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/>';
+
+	var STARTER_HTML = '\n  <h1>Hello World!</h1>\n  <p>This text will take multiple pages. <b>Here is some bold text.</b> <i>This is some italicized text.</i>\n  </p>\n  <br />\n  <p>More Text!</p><br/>\n\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  ';
 
 	var Demo = function (_Component) {
 	  _inherits(Demo, _Component);
@@ -311,7 +315,7 @@
 	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Demo).call(this, props, context));
 
 	    _this5.state = {
-	      editorState: _draftJs.EditorState.createEmpty(),
+	      editorState: _draftJs.EditorState.createWithContent(_draftJs.ContentState.createFromBlockArray((0, _draftJs.convertFromHTML)(STARTER_HTML))),
 	      paperSize: 'Letter'
 	    };
 	    return _this5;
