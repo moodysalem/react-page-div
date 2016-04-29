@@ -255,9 +255,7 @@ class Demo extends Component {
             if (err) {
               return;
             }
-            const { body } = res;
-            console.log(body);
-            window.open(body.result);
+            window.open(res.body.result);
           });
         });
     });

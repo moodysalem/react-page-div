@@ -352,10 +352,7 @@
 	            if (err) {
 	              return;
 	            }
-	            var body = res.body;
-
-	            console.log(body);
-	            window.open(body.result);
+	            window.open(res.body.result);
 	          });
 	        });
 	      });
