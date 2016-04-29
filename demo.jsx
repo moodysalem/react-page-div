@@ -200,6 +200,9 @@ const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
 const STARTER_HTML =
   `
   <h1>Hello World!</h1>
+  <p>The idea for this project is to create a React component that takes a width and height and scales vertically to
+  contain all the contents within a fixed # of pages. This allows use of concepts like Flexbox for printed layouts.</p>
+  <p>Here are some formatting examples.</p>
   <p>This text will take multiple pages. <b>Here is some bold text.</b> <i>This is some italicized text.</i>
   </p>
   <br />
