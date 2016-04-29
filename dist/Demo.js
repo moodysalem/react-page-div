@@ -310,6 +310,66 @@
 
 	var STARTER_HTML = '\n  <h1>Hello World!</h1>\n  <p>The idea for this project is to create a React component that takes a width and height and scales vertically to\n  contain all the contents within a fixed # of pages. This allows use of concepts like Flexbox for printed layouts.</p>\n  <p>Here are some formatting examples.</p>\n  <p>This text will take multiple pages. <b>Here is some bold text.</b> <i>This is some italicized text.</i>\n  </p>\n  <br />\n  <p>More Text!</p><br/>\n\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  <p>' + LOREM_IPSUM + '</p>\n  ';
 
+	var STATIC_FLEXBOX = _react2.default.createElement(
+	  'div',
+	  { key: 'static-flexx', style: { height: 300, display: 'flex' } },
+	  _react2.default.createElement('div', { style: { flex: '4 0', backgroundColor: 'yellow' } }),
+	  _react2.default.createElement('div', { style: { flex: '1 0', backgroundColor: 'pink' } })
+	);
+
+	var STATIC_TABLE = _react2.default.createElement(
+	  'table',
+	  { key: 'table', style: { width: '100%' } },
+	  _react2.default.createElement(
+	    'thead',
+	    { key: 'thead' },
+	    _react2.default.createElement(
+	      'tr',
+	      null,
+	      _react2.default.createElement(
+	        'th',
+	        null,
+	        'Row'
+	      ),
+	      _react2.default.createElement(
+	        'th',
+	        null,
+	        'Data One'
+	      ),
+	      _react2.default.createElement(
+	        'th',
+	        null,
+	        'Data Two'
+	      )
+	    )
+	  ),
+	  _react2.default.createElement(
+	    'tbody',
+	    { key: 'tbody' },
+	    [1, 2, 3].map(function (i) {
+	      return _react2.default.createElement(
+	        'tr',
+	        { key: i },
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          i
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          'ABC'
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          '123'
+	        )
+	      );
+	    })
+	  )
+	);
+
 	var Demo = function (_Component) {
 	  _inherits(Demo, _Component);
 
@@ -396,7 +456,8 @@
 	              ),
 	              _react2.default.createElement(
 	                'button',
-	                { key: 'download', onClick: function onClick() {
+	                { key: 'download',
+	                  onClick: function onClick() {
 	                    return _this7.print();
 	                  } },
 	                downloading ? 'Downloading...' : 'Download PDF'
@@ -418,7 +479,9 @@
 	          _react2.default.createElement(
 	            PaperSize,
 	            { className: 'paper', paperSize: PAPER_SIZES[paperSize] },
-	            _react2.default.createElement('div', { ref: 'paper', dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } })
+	            _react2.default.createElement('div', { ref: 'paper', dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } }),
+	            STATIC_FLEXBOX,
+	            STATIC_TABLE
 	          )
 	        )
 	      );

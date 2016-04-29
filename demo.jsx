@@ -219,6 +219,34 @@ const STARTER_HTML =
   <p>${LOREM_IPSUM}</p>
   `;
 
+const STATIC_FLEXBOX = (
+  <div key="static-flexx" style={{height: 300, display: 'flex'}}>
+    <div style={{ flex: '4 0', backgroundColor: 'yellow'}}></div>
+    <div style={{ flex: '1 0', backgroundColor: 'pink'}}></div>
+  </div>
+);
+
+const STATIC_TABLE = (
+  <table key="table" style={{width: '100%'}}>
+    <thead key="thead">
+      <tr>
+        <th>Row</th>
+        <th>Data One</th>
+        <th>Data Two</th>
+      </tr>
+    </thead>
+    <tbody key="tbody">{[ 1, 2, 3 ].map((i) => {
+      return (
+        <tr key={i}>
+          <td>{i}</td>
+          <td>ABC</td>
+          <td>123</td>
+        </tr>
+      );
+    })}</tbody>
+  </table>
+);
+
 class Demo extends Component {
   constructor(props, context) {
     super(props, context);
@@ -278,7 +306,8 @@ class Demo extends Component {
                   Object.keys(PAPER_SIZES).map((size) => <option key={size} value={size}>{size}</option>)
                 }
               </select>
-              <button key="download" onClick={() => this.print()}>{downloading ? 'Downloading...' : 'Download PDF'}</button>
+              <button key="download"
+                      onClick={() => this.print()}>{downloading ? 'Downloading...' : 'Download PDF'}</button>
             </div>
             <div style={{backgroundColor: 'white'}}>
               <RichEditorWithControls onChange={(editorState) => this.setState({ editorState })}
@@ -289,6 +318,8 @@ class Demo extends Component {
         <div style={{ flex: 'none' }} className="window-padding-5">
           <PaperSize className="paper" paperSize={PAPER_SIZES[paperSize]}>
             <div ref="paper" dangerouslySetInnerHTML={{ __html: stateToHTML(editorState.getCurrentContent()) }}></div>
+            {STATIC_FLEXBOX}
+            {STATIC_TABLE}
           </PaperSize>
         </div>
       </div>
