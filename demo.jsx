@@ -189,7 +189,7 @@ const PaperSize = (props) => {
   );
 };
 
-const PAGE_SIZES = {
+const PAPER_SIZES = {
   Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
   Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
   A4: { width: 210, widthUnit: 'mm', height: 296, heightUnit: 'mm' }
@@ -235,18 +235,36 @@ class Demo extends Component {
   }
 
   print() {
-    const html = document.documentElement.innerHTML;
-    request
-      .post('https://html-pdf-render-dev.fastmodelsports.com/render')
-      .set('Content-Type', 'application/json')
-      .send({ html })
-      .end((err, res) => {
-        console.log(err, res);
-      });
+    if (this.state.downloading) {
+      return;
+    }
+
+    this.setState({
+      downloading: true
+    }, () => {
+      const html = document.documentElement.innerHTML,
+        { paperSize } = this.state;
+      request
+        .post('https://html-pdf-render-dev.fastmodelsports.com/render')
+        .set('Content-Type', 'application/json')
+        .send(Object.assign({ html }, PAPER_SIZES[ paperSize ]))
+        .end((err, res) => {
+          this.setState({
+            downloading: false
+          }, () => {
+            if (err) {
+              return;
+            }
+            const { body } = res;
+            console.log(body);
+            window.open(body.result);
+          });
+        });
+    });
   }
 
   render() {
-    const { editorState, paperSize } = this.state;
+    const { editorState, paperSize, downloading } = this.state;
 
     return (
       <div style={{display: 'flex'}}>
@@ -256,10 +274,10 @@ class Demo extends Component {
             <div key="select" style={{ flex: 'none'}}>
               <select value={paperSize} onChange={(e) => this.setState({ paperSize: e.target.value })}>
                 {
-                  Object.keys(PAGE_SIZES).map((size) => <option key={size} value={size}>{size}</option>)
+                  Object.keys(PAPER_SIZES).map((size) => <option key={size} value={size}>{size}</option>)
                 }
               </select>
-              <button key="download" onClick={() => this.print()}>Download PDF</button>
+              <button key="download" onClick={() => this.print()}>{downloading ? 'Downloading...' : 'Download PDF'}</button>
             </div>
             <div style={{backgroundColor: 'white'}}>
               <RichEditorWithControls onChange={(editorState) => this.setState({ editorState })}
@@ -268,7 +286,7 @@ class Demo extends Component {
           </div>
         </div>
         <div style={{ flex: 'none' }} className="window-padding-5">
-          <PaperSize className="paper" paperSize={PAGE_SIZES[paperSize]}>
+          <PaperSize className="paper" paperSize={PAPER_SIZES[paperSize]}>
             <div ref="paper" dangerouslySetInnerHTML={{ __html: stateToHTML(editorState.getCurrentContent()) }}></div>
           </PaperSize>
         </div>

@@ -300,7 +300,7 @@
 	  );
 	};
 
-	var PAGE_SIZES = {
+	var PAPER_SIZES = {
 	  Letter: { width: 8.5, widthUnit: 'in', height: 11, heightUnit: 'in' },
 	  Legal: { width: 11, widthUnit: 'in', height: 14, heightUnit: 'in' },
 	  A4: { width: 210, widthUnit: 'mm', height: 296, heightUnit: 'mm' }
@@ -333,19 +333,42 @@
 	  }, {
 	    key: 'print',
 	    value: function print() {
-	      var html = document.documentElement.innerHTML;
-	      _superagent2.default.post('https://html-pdf-render-dev.fastmodelsports.com/render').set('Content-Type', 'application/json').send({ html: html }).end(function (err, res) {
-	        console.log(err, res);
+	      var _this6 = this;
+
+	      if (this.state.downloading) {
+	        return;
+	      }
+
+	      this.setState({
+	        downloading: true
+	      }, function () {
+	        var html = document.documentElement.innerHTML;
+	        var paperSize = _this6.state.paperSize;
+
+	        _superagent2.default.post('https://html-pdf-render-dev.fastmodelsports.com/render').set('Content-Type', 'application/json').send(Object.assign({ html: html }, PAPER_SIZES[paperSize])).end(function (err, res) {
+	          _this6.setState({
+	            downloading: false
+	          }, function () {
+	            if (err) {
+	              return;
+	            }
+	            var body = res.body;
+
+	            console.log(body);
+	            window.open(body.result);
+	          });
+	        });
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      var _state = this.state;
 	      var editorState = _state.editorState;
 	      var paperSize = _state.paperSize;
+	      var downloading = _state.downloading;
 
 
 	      return _react2.default.createElement(
@@ -364,9 +387,9 @@
 	              _react2.default.createElement(
 	                'select',
 	                { value: paperSize, onChange: function onChange(e) {
-	                    return _this6.setState({ paperSize: e.target.value });
+	                    return _this7.setState({ paperSize: e.target.value });
 	                  } },
-	                Object.keys(PAGE_SIZES).map(function (size) {
+	                Object.keys(PAPER_SIZES).map(function (size) {
 	                  return _react2.default.createElement(
 	                    'option',
 	                    { key: size, value: size },
@@ -377,16 +400,16 @@
 	              _react2.default.createElement(
 	                'button',
 	                { key: 'download', onClick: function onClick() {
-	                    return _this6.print();
+	                    return _this7.print();
 	                  } },
-	                'Download PDF'
+	                downloading ? 'Downloading...' : 'Download PDF'
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { style: { backgroundColor: 'white' } },
 	              _react2.default.createElement(RichEditorWithControls, { onChange: function onChange(editorState) {
-	                  return _this6.setState({ editorState: editorState });
+	                  return _this7.setState({ editorState: editorState });
 	                },
 	                editorState: editorState })
 	            )
@@ -397,7 +420,7 @@
 	          { style: { flex: 'none' }, className: 'window-padding-5' },
 	          _react2.default.createElement(
 	            PaperSize,
-	            { className: 'paper', paperSize: PAGE_SIZES[paperSize] },
+	            { className: 'paper', paperSize: PAPER_SIZES[paperSize] },
 	            _react2.default.createElement('div', { ref: 'paper', dangerouslySetInnerHTML: { __html: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()) } })
 	          )
 	        )
