@@ -2,6 +2,7 @@ import React, { Component, PropTypes, createFactory } from 'react';
 import ReactDOM from 'react-dom';
 import { Editor, ContentState, ContentBlock, convertFromHTML, EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import request from 'superagent';
 
 import ReactPageDiv from './index.jsx';
 
@@ -234,7 +235,14 @@ class Demo extends Component {
   }
 
   print() {
-    alert('does nothing yet...');
+    const html = document.documentElement.innerHTML;
+    request
+      .post('https://html-pdf-render-dev.fastmodelsports.com/render')
+      .set('Content-Type', 'application/json')
+      .send({ html })
+      .end((err, res) => {
+        console.log(err, res);
+      });
   }
 
   render() {

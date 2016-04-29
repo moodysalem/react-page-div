@@ -62,6 +62,10 @@
 
 	var _draftJsExportHtml = __webpack_require__(4);
 
+	var _superagent = __webpack_require__(13);
+
+	var _superagent2 = _interopRequireDefault(_superagent);
+
 	var _index = __webpack_require__(14);
 
 	var _index2 = _interopRequireDefault(_index);
@@ -329,7 +333,10 @@
 	  }, {
 	    key: 'print',
 	    value: function print() {
-	      alert('does nothing yet...');
+	      var html = document.documentElement.innerHTML;
+	      _superagent2.default.post('https://html-pdf-render-dev.fastmodelsports.com/render').set('Content-Type', 'application/json').send({ html: html }).end(function (err, res) {
+	        console.log(err, res);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -1247,7 +1254,12 @@
 	};
 
 /***/ },
-/* 13 */,
+/* 13 */
+/***/ function(module, exports) {
+
+	module.exports = superagent;
+
+/***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 

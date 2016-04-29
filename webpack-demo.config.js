@@ -23,6 +23,7 @@ module.exports = {
     'react-dom': 'ReactDOM',
     'draft-js': 'Draft',
     'immutable': 'Immutable',
-    'jspdf': 'jsPDF'
+    'jspdf': 'jsPDF',
+    'superagent': 'superagent'
   }
 };
