@@ -221,10 +221,10 @@ const STARTER_HTML =
 
 const STATIC_FLEXBOX = (
   <div key="static-flex" className="row" style={{height: 300}}>
-    <div key="left" className="col-xs-8" style={{ backgroundColor: 'yellow'}}>
+    <div key="left" className="col-xs-9" style={{ backgroundColor: 'yellow'}}>
       There is some content in this side
     </div>
-    <div key="right"  className="col-xs-4" style={{ flex: '1 0', minWidth: 0, backgroundColor: 'pink'}}>
+    <div key="right" className="col-xs-3" style={{ backgroundColor: 'pink'}}>
       And more content here
     </div>
   </div>

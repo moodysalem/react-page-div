@@ -315,12 +315,12 @@
 	  { key: 'static-flex', className: 'row', style: { height: 300 } },
 	  _react2.default.createElement(
 	    'div',
-	    { key: 'left', className: 'col-xs-8', style: { backgroundColor: 'yellow' } },
+	    { key: 'left', className: 'col-xs-9', style: { backgroundColor: 'yellow' } },
 	    'There is some content in this side'
 	  ),
 	  _react2.default.createElement(
 	    'div',
-	    { key: 'right', className: 'col-xs-4', style: { flex: '1 0', minWidth: 0, backgroundColor: 'pink' } },
+	    { key: 'right', className: 'col-xs-3', style: { backgroundColor: 'pink' } },
 	    'And more content here'
 	  )
 	);
