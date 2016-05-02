@@ -312,9 +312,17 @@
 
 	var STATIC_FLEXBOX = _react2.default.createElement(
 	  'div',
-	  { key: 'static-flexx', style: { height: 300, display: 'flex' } },
-	  _react2.default.createElement('div', { style: { flex: '4 0', backgroundColor: 'yellow' } }),
-	  _react2.default.createElement('div', { style: { flex: '1 0', backgroundColor: 'pink' } })
+	  { key: 'static-flex', className: 'row', style: { height: 300 } },
+	  _react2.default.createElement(
+	    'div',
+	    { key: 'left', className: 'col-xs-8', style: { backgroundColor: 'yellow' } },
+	    'There is some content in this side'
+	  ),
+	  _react2.default.createElement(
+	    'div',
+	    { key: 'right', className: 'col-xs-4', style: { flex: '1 0', minWidth: 0, backgroundColor: 'pink' } },
+	    'And more content here'
+	  )
 	);
 
 	var STATIC_TABLE = _react2.default.createElement(
