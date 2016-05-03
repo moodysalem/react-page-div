@@ -1,6 +1,6 @@
 {
   "name": "react-page-div",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A react component that expands or shrinks to fit its contents by some increment used for printing",
   "main": "dist/ReactPageDiv.js",
   "files": [
