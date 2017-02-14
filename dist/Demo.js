@@ -413,7 +413,7 @@
 	        var html = document.documentElement.innerHTML;
 	        var paperSize = _this6.state.paperSize;
 
-	        _superagent2.default.post('https://html-pdf-render-dev.fastmodelsports.com/render').set('Content-Type', 'application/json').send(Object.assign({ html: html }, PAPER_SIZES[paperSize])).end(function (err, res) {
+	        _superagent2.default.post('https://8lbb08zjjh.execute-api.us-east-1.amazonaws.com/prod/render-html-pdf').set('Content-Type', 'application/json').send(Object.assign({ html: html }, PAPER_SIZES[paperSize])).end(function (err, res) {
 	          _this6.setState({
 	            downloading: false
 	          }, function () {

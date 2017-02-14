@@ -284,7 +284,7 @@ class Demo extends Component {
       const html = document.documentElement.innerHTML,
         { paperSize } = this.state;
       request
-        .post('https://html-pdf-render-dev.fastmodelsports.com/render')
+        .post('https://8lbb08zjjh.execute-api.us-east-1.amazonaws.com/prod/render-html-pdf')
         .set('Content-Type', 'application/json')
         .send(Object.assign({ html }, PAPER_SIZES[ paperSize ]))
         .end((err, res) => {
